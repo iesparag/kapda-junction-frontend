@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap, map } from 'rxjs';
+import { environment } from '../../../environments/environment';
 import { Product } from '../../models/product.model';
 import { AuthService } from './auth.service';
 
@@ -8,7 +9,7 @@ import { AuthService } from './auth.service';
   providedIn: 'root'
 })
 export class WishlistService {
-  private apiUrl = 'http://localhost:3000/api';
+  private apiUrl = environment.apiUrl;
   private wishlistSubject = new BehaviorSubject<Product[]>([]);
   public wishlist$ = this.wishlistSubject.asObservable();
 
