@@ -1,0 +1,126 @@
+.orders {
+  padding: 24px 0;
+  min-height: calc(100vh - 200px);
+}
+
+.orders h1 {
+  margin-bottom: 24px;
+  color: #333;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 48px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.empty-state p {
+  font-size: 18px;
+  color: #666;
+  margin-bottom: 24px;
+}
+
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.order-info h3 {
+  margin: 0 0 8px 0;
+  font-size: 20px;
+  color: #333;
+}
+
+.order-date, .order-total {
+  margin: 4px 0;
+  color: #666;
+  font-size: 14px;
+}
+
+.order-total {
+  font-weight: 600;
+  color: #1976d2;
+  font-size: 16px;
+}
+
+.status-badge {
+  padding: 6px 16px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.status-badge.status-pending {
+  background-color: #fff3e0;
+  color: #f57c00;
+}
+
+.status-badge.status-shipped {
+  background-color: #e3f2fd;
+  color: #1976d2;
+}
+
+.status-badge.status-delivered {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.status-badge.status-cancelled {
+  background-color: #ffebee;
+  color: #c62828;
+}
+
+.order-items {
+  margin-bottom: 16px;
+}
+
+.order-items h4 {
+  margin: 0 0 12px 0;
+  font-size: 16px;
+  color: #333;
+}
+
+.items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #f0f0f0;
+  color: #666;
+  font-size: 14px;
+}
+
+.shipping-address {
+  padding-top: 16px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.shipping-address h4 {
+  margin: 0 0 8px 0;
+  font-size: 16px;
+  color: #333;
+}
+
+.shipping-address p {
+  margin: 4px 0;
+  color: #666;
+  font-size: 14px;
+}
+

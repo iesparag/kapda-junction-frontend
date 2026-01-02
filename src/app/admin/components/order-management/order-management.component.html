@@ -1,0 +1,49 @@
+<div class="order-management">
+  <h2>Order Management</h2>
+  
+  <div class="orders-list" *ngIf="orders$ | async as orders">
+    <div *ngIf="orders.length === 0" class="empty-state">
+      <p>No orders yet.</p>
+    </div>
+    
+    <div class="card" *ngFor="let order of orders">
+      <div class="order-header">
+        <div class="order-info">
+          <h3>Order #{{ order.orderNumber }}</h3>
+          <p class="order-date">Date: {{ order.createdAt | date:'medium' }}</p>
+          <p class="order-total">Total: ₹{{ order.totalAmount.toFixed(2) }}</p>
+        </div>
+        <div class="order-status">
+          <select [value]="order.status" 
+                  (change)="updateOrderStatus(order.id, $any($event.target).value)">
+            <option value="pending">Pending</option>
+            <option value="shipped">Shipped</option>
+            <option value="delivered">Delivered</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
+          <span [class]="'status-badge ' + getStatusClass(order.status)">
+            {{ order.status | titlecase }}
+          </span>
+        </div>
+      </div>
+      
+      <div class="order-items">
+        <h4>Items ({{ getTotalItems(order) }})</h4>
+        <ul>
+          <li *ngFor="let item of order.items">
+            {{ item.productName }} - Qty: {{ item.quantity }} - ₹{{ item.price.toFixed(2) }}
+          </li>
+        </ul>
+      </div>
+      
+      <div class="shipping-address">
+        <h4>Shipping Address</h4>
+        <p>{{ order.shippingAddress.name }}</p>
+        <p>{{ order.shippingAddress.address }}</p>
+        <p>{{ order.shippingAddress.city }}, {{ order.shippingAddress.state }} {{ order.shippingAddress.zipCode }}</p>
+        <p>Phone: {{ order.shippingAddress.phone }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+

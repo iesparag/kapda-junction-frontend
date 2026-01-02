@@ -1,0 +1,71 @@
+<div class="product-detail" *ngIf="product$ | async as product">
+  <div class="container">
+    <button class="back-btn" (click)="router.navigate(['/'])">← Back to Home</button>
+    
+    <div class="product-content">
+      <div class="product-images">
+        <div class="main-image">
+          <img [src]="product.images[selectedImageIndex] || product.images[0] || 'https://via.placeholder.com/500x500'" 
+               [alt]="product.name">
+        </div>
+        <div class="thumbnail-images" *ngIf="product.images.length > 1">
+          <img *ngFor="let img of product.images; let i = index" 
+               [src]="img" 
+               [alt]="product.name"
+               [class.active]="i === selectedImageIndex"
+               (click)="selectImage(i)">
+        </div>
+      </div>
+
+      <div class="product-info">
+        <h1>{{ product.name }}</h1>
+        <p class="product-description">{{ product.description }}</p>
+        
+        <div class="product-price">
+          <span class="current-price">₹{{ getCurrentPrice(product).toFixed(0) }}</span>
+          <span class="original-price" *ngIf="product.discount">₹{{ product.price }}</span>
+          <span class="discount-badge" *ngIf="product.discount">{{ product.discount }}% OFF</span>
+        </div>
+
+        <div class="product-stock" [class.in-stock]="product.stock > 0" [class.out-of-stock]="product.stock === 0">
+          {{ product.stock > 0 ? 'In Stock' : 'Out of Stock' }} ({{ product.stock }} available)
+        </div>
+
+        <div class="quantity-selector">
+          <label>Quantity:</label>
+          <div class="quantity-controls">
+            <button (click)="decreaseQuantity()" [disabled]="quantity <= 1">-</button>
+            <input type="number" [(ngModel)]="quantity" min="1" [max]="product.stock" readonly>
+            <button (click)="increaseQuantity()" [disabled]="quantity >= product.stock">+</button>
+          </div>
+        </div>
+
+        <div class="product-actions">
+          <button class="btn btn-primary" (click)="addToCart(product)" [disabled]="product.stock === 0">
+            Add to Cart
+          </button>
+          <button class="btn btn-success" (click)="buyNow(product)" [disabled]="product.stock === 0">
+            Buy Now
+          </button>
+          <button class="btn btn-whatsapp" (click)="openInquiryModal()">
+            <span class="whatsapp-icon">💬</span> WhatsApp Inquiry
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="product-detail" *ngIf="!(product$ | async)">
+  <div class="container">
+    <p>Product not found.</p>
+  </div>
+</div>
+
+<app-whatsapp-inquiry-modal 
+  *ngIf="currentProduct"
+  [product]="currentProduct"
+  [isOpen]="showInquiryModal"
+  (close)="closeInquiryModal()">
+</app-whatsapp-inquiry-modal>
+

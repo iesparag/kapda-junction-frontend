@@ -1,0 +1,85 @@
+<div class="product-listing">
+  <div class="container">
+    <div class="listing-header">
+      <div class="header-content">
+        <h1 *ngIf="module$ | async as module">{{ module.name }}</h1>
+        <h1 *ngIf="!(module$ | async)">All Products</h1>
+        <button class="mobile-filter-toggle" (click)="toggleFilters()">
+          <span>☰</span> Filters
+        </button>
+        <!-- <button class="cart-button" [routerLink]="['/cart']">
+          <span class="cart-icon">🛒</span>
+          <span class="cart-count" *ngIf="cartItemCount$ | async as count">{{ count }}</span>
+        </button> -->
+      </div>
+    </div>
+
+    <div class="listing-content">
+      <div class="filter-overlay" (click)="showFilters = false" *ngIf="showFilters"></div>
+      <div class="filters-sidebar" [class.mobile-open]="showFilters">
+        <div class="filter-header-mobile">
+          <h3>Filters</h3>
+          <button class="close-filters" (click)="toggleFilters()">×</button>
+        </div>
+        <div class="filter-section">
+          <h3>Categories</h3>
+          <div class="category-list">
+            <button class="category-btn" 
+                    [class.active]="!selectedCategory"
+                    (click)="onCategoryChange('')">
+              All Categories
+            </button>
+            <button *ngFor="let category of categories$ | async" 
+                    class="category-btn"
+                    [class.active]="selectedCategory === category.id"
+                    (click)="onCategoryChange(category.id)">
+              {{ category.name }}
+            </button>
+          </div>
+        </div>
+
+        <div class="filter-section">
+          <h3>Price Range</h3>
+          <div class="price-filter">
+            <input type="number" [(ngModel)]="minPrice" 
+                   (change)="onPriceFilterChange()" 
+                   placeholder="Min" class="price-input">
+            <span>to</span>
+            <input type="number" [(ngModel)]="maxPrice" 
+                   (change)="onPriceFilterChange()" 
+                   placeholder="Max" class="price-input">
+          </div>
+        </div>
+
+        <div class="filter-section">
+          <button class="btn btn-secondary" (click)="clearFilters()">Clear Filters</button>
+        </div>
+      </div>
+
+      <div class="products-section">
+        <div class="products-header">
+          <p class="results-count">
+            {{ (products$ | async)?.length || 0 }} products found
+          </p>
+          <div class="sort-controls">
+            <label>Sort by:</label>
+            <select [(ngModel)]="sortBy" (change)="onSortChange(sortBy)">
+              <option value="newest">Newest First</option>
+              <option value="price-low">Price: Low to High</option>
+              <option value="price-high">Price: High to Low</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="products-grid" *ngIf="products$ | async as products">
+          <app-product-card *ngFor="let product of products" [product]="product"></app-product-card>
+        </div>
+
+        <div *ngIf="(products$ | async)?.length === 0" class="empty-state">
+          <p>No products found. Try adjusting your filters.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

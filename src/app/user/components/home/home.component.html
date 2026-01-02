@@ -1,0 +1,31 @@
+<div class="home">
+  <div class="hero-section">
+    <div class="container">
+      <h1>Welcome to Kapda Junction</h1>
+      <p>Your one-stop shop for premium products</p>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="modules-section">
+      <h2>Shop by Category</h2>
+      <div class="modules-grid" *ngIf="modules$ | async as modules">
+        <div class="module-card" *ngFor="let module of modules" 
+             [routerLink]="['/module', module.slug]">
+          <div class="module-banner" *ngIf="module.bannerImage">
+            <img [src]="module.bannerImage" [alt]="module.name" (error)="onImageError($event)">
+          </div>
+          <div class="module-content">
+            <div class="module-icon" *ngIf="module.icon">{{ module.icon }}</div>
+            <h3>{{ module.name }}</h3>
+            <p *ngIf="module.description" class="module-description">{{ module.description }}</p>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="(modules$ | async)?.length === 0" class="empty-state">
+        <p>No product modules available at the moment.</p>
+      </div>
+    </div>
+  </div>
+</div>
+

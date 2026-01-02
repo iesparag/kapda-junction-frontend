@@ -1,0 +1,172 @@
+<div class="category-management">
+  <div class="header-actions">
+    <h2>Category Management</h2>
+    <button class="btn btn-primary" (click)="openAddForm()">+ Add New Category</button>
+  </div>
+
+  <div class="form-section" *ngIf="showForm">
+    <div class="card">
+      <h3>{{ editingCategory ? 'Edit' : 'Add New' }} Category</h3>
+      <form (ngSubmit)="saveCategory()">
+        <div class="form-group">
+          <label class="form-label">Category Name *</label>
+          <input type="text" class="form-control" [(ngModel)]="formData.name" 
+                 (input)="onNameChange()" name="name" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Slug *</label>
+          <input type="text" class="form-control" [(ngModel)]="formData.slug" 
+                 name="slug" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Product Module *</label>
+          <select class="form-control" [(ngModel)]="formData.productModuleId" 
+                  name="productModuleId" 
+                  (change)="onModuleChange()"
+                  required>
+            <option value="">Select Module</option>
+            <option *ngFor="let module of modules" [value]="module.id">
+              {{ module.name }}
+            </option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Parent Category (Optional - for subcategories)</label>
+          <select class="form-control" [(ngModel)]="formData.parentCategoryId" 
+                  name="parentCategoryId"
+                  [disabled]="!formData.productModuleId">
+            <option value="">None (Main Category)</option>
+            <option *ngFor="let cat of availableParentCategories" 
+                    [value]="cat.id">
+              {{ cat.name }}
+            </option>
+          </select>
+          <small *ngIf="!formData.productModuleId" class="form-hint">
+            Please select a Product Module first to see parent categories
+          </small>
+          <small *ngIf="formData.productModuleId && availableParentCategories.length === 0" class="form-hint">
+            No main categories available in this module. This will be created as a main category.
+          </small>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Category Image</label>
+          <app-image-upload
+            [existingImages]="getImageArray()"
+            [multiple]="false"
+            [maxImages]="1"
+            (imagesChange)="onImageChange($event)">
+          </app-image-upload>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Description</label>
+          <textarea class="form-control" [(ngModel)]="formData.description" 
+                    name="description" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+          <label>
+            <input type="checkbox" [(ngModel)]="formData.isActive" name="isActive">
+            Active
+          </label>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">Save</button>
+          <button type="button" class="btn btn-secondary" (click)="cancelForm()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="categories-list">
+    <!-- Main Categories (without parent) -->
+    <ng-container *ngFor="let category of mainCategories">
+      <div class="main-category">
+        <div class="card">
+          <div class="category-header">
+            <div class="category-image-preview" *ngIf="category.image">
+              <img [src]="category.image" [alt]="category.name + ' image'" (error)="onImageError($event)">
+            </div>
+            <div class="category-info">
+              <h3>{{ category.name }}</h3>
+              <p class="slug">Slug: {{ category.slug }}</p>
+              <p class="module-name">Module: {{ getModuleName(category.productModuleId) }}</p>
+              <p class="description" *ngIf="category.description">{{ category.description }}</p>
+              
+              <!-- Show subcategories count -->
+              <div class="subcategories-list">
+                <ng-container *ngIf="getSubcategoriesForCategory(category.id) as subcats">
+                  <div *ngIf="subcats.length > 0" class="subcategories-section">
+                    <strong>Subcategories ({{ subcats.length }}):</strong>
+                    <div class="subcategories-tags">
+                      <span *ngFor="let subcat of subcats" class="subcategory-tag">
+                        {{ subcat.name }}
+                      </span>
+                    </div>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+            <div class="category-actions">
+              <button class="btn btn-secondary" (click)="toggleActive(category)">
+                {{ category.isActive ? 'Disable' : 'Enable' }}
+              </button>
+              <button class="btn btn-primary" (click)="openEditForm(category)">Edit</button>
+              <button class="btn btn-danger" (click)="deleteCategory(category)">Delete</button>
+            </div>
+          </div>
+          <div class="category-status">
+            <span [class.active]="category.isActive" [class.inactive]="!category.isActive">
+              {{ category.isActive ? 'Active' : 'Inactive' }}
+            </span>
+          </div>
+        </div>
+        
+        <!-- Subcategories under this main category -->
+        <div class="subcategories-container">
+          <ng-container *ngIf="getSubcategoriesForCategory(category.id) as subcats">
+            <div *ngFor="let subcat of subcats" class="sub-category">
+              <div class="card">
+                <div class="category-header">
+                  <div class="category-image-preview" *ngIf="subcat.image">
+                    <img [src]="subcat.image" [alt]="subcat.name + ' image'" (error)="onImageError($event)">
+                  </div>
+                  <div class="category-info">
+                    <div class="category-badge">
+                      <span class="badge-subcategory">Subcategory</span>
+                    </div>
+                    <h3>
+                      <span class="subcategory-indicator">└─</span>
+                      {{ subcat.name }}
+                    </h3>
+                    <p class="slug">Slug: {{ subcat.slug }}</p>
+                    <p class="module-name">Module: {{ getModuleName(subcat.productModuleId) }}</p>
+                    <p class="parent-category">
+                      Parent: {{ getCategoryName(subcat.parentCategoryId!) }}
+                    </p>
+                    <p class="description" *ngIf="subcat.description">{{ subcat.description }}</p>
+                  </div>
+                  <div class="category-actions">
+                    <button class="btn btn-secondary" (click)="toggleActive(subcat)">
+                      {{ subcat.isActive ? 'Disable' : 'Enable' }}
+                    </button>
+                    <button class="btn btn-primary" (click)="openEditForm(subcat)">Edit</button>
+                    <button class="btn btn-danger" (click)="deleteCategory(subcat)">Delete</button>
+                  </div>
+                </div>
+                <div class="category-status">
+                  <span [class.active]="subcat.isActive" [class.inactive]="!subcat.isActive">
+                    {{ subcat.isActive ? 'Active' : 'Inactive' }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </ng-container>
+    
+    <div *ngIf="mainCategories.length === 0" class="empty-state">
+      <p>No categories available. Create your first category!</p>
+    </div>
+  </div>
+</div>
+

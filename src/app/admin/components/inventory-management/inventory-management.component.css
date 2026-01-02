@@ -1,0 +1,111 @@
+.inventory-management {
+  padding: 24px 0;
+}
+
+.inventory-management h2 {
+  margin-bottom: 24px;
+  color: #333;
+}
+
+.inventory-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.summary-card {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.summary-card h3 {
+  margin: 0 0 12px 0;
+  font-size: 14px;
+  color: #666;
+  font-weight: 500;
+}
+
+.summary-card .count {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 600;
+  color: #333;
+}
+
+.summary-card .count.in-stock {
+  color: #2e7d32;
+}
+
+.summary-card .count.low-stock {
+  color: #f57c00;
+}
+
+.summary-card .count.out-of-stock {
+  color: #c62828;
+}
+
+.inventory-table {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  overflow-x: auto;
+}
+
+.inventory-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.inventory-table th,
+.inventory-table td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.inventory-table th {
+  background-color: #f5f5f5;
+  font-weight: 500;
+  color: #333;
+}
+
+.inventory-table tr:hover {
+  background-color: #f9f9f9;
+}
+
+.status-badge {
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.status-badge.in-stock {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.status-badge.low-stock {
+  background-color: #fff3e0;
+  color: #f57c00;
+}
+
+.status-badge.out-of-stock {
+  background-color: #ffebee;
+  color: #c62828;
+}
+
+@media (max-width: 768px) {
+  .inventory-summary {
+    grid-template-columns: 1fr;
+  }
+  
+  .inventory-table {
+    font-size: 14px;
+  }
+}
+

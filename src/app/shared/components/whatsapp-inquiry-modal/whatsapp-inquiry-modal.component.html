@@ -1,0 +1,83 @@
+<div class="modal-overlay" *ngIf="isOpen" (mousedown)="onOverlayMouseDown($event)" (click)="onOverlayClick($event)">
+  <div class="modal-content" (mousedown)="$event.stopPropagation()" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>WhatsApp Inquiry</h2>
+      <button type="button" class="close-btn" (click)="closeModal($event)" aria-label="Close">×</button>
+    </div>
+
+    <div class="product-preview">
+      <img [src]="product.images[0] || 'https://via.placeholder.com/150'" [alt]="product.name">
+      <div class="product-info">
+        <h3>{{ product.name }}</h3>
+        <p class="price">₹{{ currentPrice }}</p>
+        <p class="original-price" *ngIf="product.discount">₹{{ product.price }}</p>
+      </div>
+    </div>
+
+    <form (ngSubmit)="onSubmit()" class="inquiry-form">
+      <div class="form-group">
+        <label for="userName">Your Name *</label>
+        <input 
+          type="text" 
+          id="userName"
+          [(ngModel)]="inquiryForm.userName"
+          name="userName"
+          required
+          placeholder="Enter your name"
+          (click)="$event.stopPropagation()"
+          (focus)="$event.stopPropagation()">
+      </div>
+
+      <div class="form-group">
+        <label for="userEmail">Email</label>
+        <input 
+          type="email" 
+          id="userEmail"
+          [(ngModel)]="inquiryForm.userEmail"
+          name="userEmail"
+          placeholder="Enter your email (optional)"
+          (click)="$event.stopPropagation()"
+          (focus)="$event.stopPropagation()">
+      </div>
+
+      <div class="form-group">
+        <label for="userPhone">Phone Number</label>
+        <input 
+          type="tel" 
+          id="userPhone"
+          [(ngModel)]="inquiryForm.userPhone"
+          name="userPhone"
+          pattern="[0-9]*"
+          inputmode="numeric"
+          placeholder="Enter your phone number (optional)"
+          (click)="$event.stopPropagation()"
+          (focus)="$event.stopPropagation()"
+          (input)="$event.stopPropagation()">
+      </div>
+
+      <div class="form-group">
+        <label for="message">Your Inquiry Message *</label>
+        <textarea 
+          id="message"
+          [(ngModel)]="inquiryForm.message"
+          name="message"
+          rows="4"
+          required
+          placeholder="Tell us what you need..."
+          (click)="$event.stopPropagation()"
+          (focus)="$event.stopPropagation()"></textarea>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn btn-secondary" (click)="closeModal($event)" [disabled]="isSubmitting">
+          Cancel
+        </button>
+        <button type="submit" class="btn btn-primary" [disabled]="isSubmitting">
+          <span *ngIf="!isSubmitting">Submit Inquiry</span>
+          <span *ngIf="isSubmitting">Submitting...</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+

@@ -1,0 +1,37 @@
+<div class="admin-dashboard">
+  <div class="container">
+    <div class="dashboard-header">
+      <h1>Admin Dashboard</h1>
+      <button class="admin-hamburger" (click)="toggleMobileNav()" [class.active]="mobileNavOpen" aria-label="Toggle admin menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    
+    <!-- Desktop Navigation -->
+    <div class="admin-nav desktop-admin-nav">
+      <a routerLink="/admin/modules" routerLinkActive="active">Product Modules</a>
+      <a routerLink="/admin/categories" routerLinkActive="active">Categories</a>
+      <a routerLink="/admin/products" routerLinkActive="active">Products</a>
+      <a routerLink="/admin/inventory" routerLinkActive="active">Inventory</a>
+      <a routerLink="/admin/orders" routerLinkActive="active">Orders</a>
+      <a routerLink="/admin/delivery-config" routerLinkActive="active">Delivery Config</a>
+      <a routerLink="/admin/whatsapp-inquiries" routerLinkActive="active">WhatsApp Inquiries</a>
+    </div>
+
+    <!-- Mobile Navigation -->
+    <div class="admin-nav mobile-admin-nav" [class.open]="mobileNavOpen">
+      <a routerLink="/admin/modules" routerLinkActive="active" (click)="closeMobileNav()">Product Modules</a>
+      <a routerLink="/admin/categories" routerLinkActive="active" (click)="closeMobileNav()">Categories</a>
+      <a routerLink="/admin/products" routerLinkActive="active" (click)="closeMobileNav()">Products</a>
+      <a routerLink="/admin/inventory" routerLinkActive="active" (click)="closeMobileNav()">Inventory</a>
+      <a routerLink="/admin/orders" routerLinkActive="active" (click)="closeMobileNav()">Orders</a>
+      <a routerLink="/admin/delivery-config" routerLinkActive="active" (click)="closeMobileNav()">Delivery Config</a>
+      <a routerLink="/admin/whatsapp-inquiries" routerLinkActive="active" (click)="closeMobileNav()">WhatsApp Inquiries</a>
+    </div>
+
+    <router-outlet></router-outlet>
+  </div>
+</div>
+

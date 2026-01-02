@@ -1,0 +1,30 @@
+<div class="login-container">
+  <div class="login-card">
+    <h1>Login</h1>
+    <form (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input type="email" class="form-control" [(ngModel)]="email" 
+               name="email" required autocomplete="email">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input type="password" class="form-control" [(ngModel)]="password" 
+               name="password" required autocomplete="current-password">
+      </div>
+      <div class="error-message" *ngIf="error">{{ error }}</div>
+      <button type="submit" class="btn btn-primary btn-block" [disabled]="loading">
+        {{ loading ? 'Logging in...' : 'Login' }}
+      </button>
+      <div class="register-link">
+        <p>Don't have an account? <a routerLink="/register">Register here</a></p>
+      </div>
+      <div class="admin-info">
+        <p><strong>Admin Login:</strong></p>
+        <p>Email: admin&#64;kapdajunction.com</p>
+        <p>Password: admin123</p>
+      </div>
+    </form>
+  </div>
+</div>
+

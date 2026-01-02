@@ -1,0 +1,158 @@
+.module-management {
+  padding: 24px 0;
+}
+
+.header-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.header-actions h2 {
+  margin: 0;
+  color: #333;
+}
+
+.form-section {
+  margin-bottom: 32px;
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.modules-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.module-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.module-image-preview {
+  width: 150px;
+  height: 80px;
+  flex-shrink: 0;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid #ddd;
+}
+
+.module-image-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.module-info {
+  flex: 1;
+}
+
+.module-info h3 {
+  margin: 0 0 8px 0;
+  font-size: 20px;
+  color: #333;
+}
+
+.slug {
+  color: #666;
+  font-size: 14px;
+  margin: 4px 0;
+}
+
+.description {
+  color: #666;
+  margin-top: 8px;
+}
+
+.module-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.module-status {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.module-status span {
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.module-status span.active {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.module-status span.inactive {
+  background-color: #ffebee;
+  color: #c62828;
+}
+
+@media (max-width: 768px) {
+  .header-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+  }
+
+  .header-actions h2 {
+    font-size: 20px;
+  }
+
+  .header-actions button {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+  }
+  
+  .module-header {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .module-image-preview {
+    width: 100%;
+    height: 150px;
+  }
+  
+  .module-actions {
+    width: 100%;
+    flex-direction: column;
+  }
+  
+  .module-actions button {
+    flex: 1;
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .module-management {
+    padding: 16px 0;
+  }
+
+  .form-section {
+    margin-bottom: 24px;
+  }
+
+  .card {
+    padding: 16px;
+  }
+}
+

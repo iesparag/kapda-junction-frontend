@@ -1,0 +1,35 @@
+<div class="register-container">
+  <div class="register-card">
+    <h1>Register</h1>
+    <form (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label class="form-label">Full Name</label>
+        <input type="text" class="form-control" [(ngModel)]="name" 
+               name="name" required autocomplete="name">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input type="email" class="form-control" [(ngModel)]="email" 
+               name="email" required autocomplete="email">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input type="password" class="form-control" [(ngModel)]="password" 
+               name="password" required autocomplete="new-password" minlength="6">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Confirm Password</label>
+        <input type="password" class="form-control" [(ngModel)]="confirmPassword" 
+               name="confirmPassword" required autocomplete="new-password">
+      </div>
+      <div class="error-message" *ngIf="error">{{ error }}</div>
+      <button type="submit" class="btn btn-primary btn-block" [disabled]="loading">
+        {{ loading ? 'Registering...' : 'Register' }}
+      </button>
+      <div class="login-link">
+        <p>Already have an account? <a routerLink="/login">Login here</a></p>
+      </div>
+    </form>
+  </div>
+</div>
+

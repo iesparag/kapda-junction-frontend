@@ -1,0 +1,70 @@
+<div class="delivery-config">
+  <h2>Delivery Configuration</h2>
+  
+  <div class="config-section">
+    <h3>General Settings</h3>
+    <div class="form-group">
+      <label>Packaging Charge (₹)</label>
+      <input type="number" [(ngModel)]="config.packagingCharge" min="0" class="form-control">
+    </div>
+    <div class="form-group">
+      <label>Free Delivery Threshold (₹)</label>
+      <input type="number" [(ngModel)]="config.freeDeliveryThreshold" min="0" class="form-control">
+      <small>Orders above this amount will get free delivery</small>
+    </div>
+    <div class="form-group">
+      <label>WhatsApp Number</label>
+      <input type="text" [(ngModel)]="config.whatsappNumber" placeholder="e.g., +919876543210" class="form-control">
+      <small>WhatsApp number for product inquiries (include country code, e.g., +91)</small>
+    </div>
+  </div>
+
+  <div class="config-section">
+    <h3>State-wise Delivery Charges</h3>
+    <div class="add-item-form">
+      <select [(ngModel)]="newState" class="form-control">
+        <option value="">Select State</option>
+        <option *ngFor="let state of states" [value]="state">{{ state }}</option>
+      </select>
+      <input type="number" [(ngModel)]="newStateCharge" placeholder="Charge (₹)" min="0" class="form-control">
+      <button (click)="addStateCharge()" class="btn btn-primary">Add</button>
+    </div>
+    
+    <div class="items-list" *ngIf="hasStateCharges()">
+      <div class="item-row" *ngFor="let state of getStateKeys()">
+        <span class="item-name">{{ state }}</span>
+        <span class="item-value">₹{{ config.stateCharges[state] }}</span>
+        <button (click)="removeStateCharge(state)" class="btn btn-danger btn-sm">Remove</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="config-section">
+    <h3>Product-wise Delivery Charges</h3>
+    <div class="add-item-form" *ngIf="products$ | async as products">
+      <select [(ngModel)]="selectedProductId" class="form-control">
+        <option value="">Select Product</option>
+        <option *ngFor="let product of products" [value]="product.id">{{ product.name }}</option>
+      </select>
+      <input type="number" [(ngModel)]="newProductCharge" placeholder="Charge (₹)" min="0" class="form-control">
+      <button (click)="addProductCharge()" class="btn btn-primary">Add</button>
+    </div>
+    
+    <ng-container *ngIf="products$ | async as products">
+      <div class="items-list" *ngIf="hasProductCharges()">
+        <div class="item-row" *ngFor="let productId of getProductKeys()">
+          <span class="item-name">{{ getProductName(products, productId) }}</span>
+          <span class="item-value">₹{{ config.productCharges[productId] }}</span>
+          <button (click)="removeProductCharge(productId)" class="btn btn-danger btn-sm">Remove</button>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+
+  <div class="actions">
+    <button (click)="saveConfig()" [disabled]="isSaving" class="btn btn-primary btn-large">
+      {{ isSaving ? 'Saving...' : 'Save Configuration' }}
+    </button>
+  </div>
+</div>
+

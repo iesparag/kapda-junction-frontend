@@ -1,0 +1,65 @@
+<header class="header">
+  <div class="container">
+    <div class="header-content">
+      <div class="logo">
+        <a routerLink="/" (click)="closeMobileMenu()">
+          <h1>Kapda Junction</h1>
+        </a>
+      </div>
+      
+      <!-- Hamburger Menu Button -->
+      <button class="hamburger" (click)="toggleMobileMenu()" [class.active]="mobileMenuOpen" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <!-- Desktop Navigation -->
+      <nav class="nav desktop-nav">
+        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
+        <a *ngIf="(currentUser$ | async)?.role === 'admin'" routerLink="/admin" routerLinkActive="active">Admin</a>
+        <a routerLink="/cart" routerLinkActive="active">
+          Cart
+          <span class="cart-badge" *ngIf="cartItemCount$ | async as count">{{ count }}</span>
+        </a>
+        <a *ngIf="currentUser$ | async" routerLink="/wishlist" routerLinkActive="active">
+          Wishlist
+          <span class="cart-badge" *ngIf="wishlistCount$ | async as count">{{ count }}</span>
+        </a>
+        <a *ngIf="currentUser$ | async" routerLink="/orders" routerLinkActive="active">Orders</a>
+        <ng-container *ngIf="currentUser$ | async as user; else notLoggedIn">
+          <span class="user-name">{{ user.name }}</span>
+          <a (click)="logout()" class="logout-btn">Logout</a>
+        </ng-container>
+        <ng-template #notLoggedIn>
+          <a routerLink="/login" routerLinkActive="active">Login</a>
+        </ng-template>
+      </nav>
+    </div>
+
+    <!-- Mobile Navigation -->
+    <nav class="nav mobile-nav" [class.open]="mobileMenuOpen">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" (click)="closeMobileMenu()">Home</a>
+      <a *ngIf="(currentUser$ | async)?.role === 'admin'" routerLink="/admin" routerLinkActive="active" (click)="closeMobileMenu()">Admin</a>
+      <a routerLink="/cart" routerLinkActive="active" (click)="closeMobileMenu()">
+        Cart
+        <span class="cart-badge" *ngIf="cartItemCount$ | async as count">{{ count }}</span>
+      </a>
+      <a *ngIf="currentUser$ | async" routerLink="/wishlist" routerLinkActive="active" (click)="closeMobileMenu()">
+        Wishlist
+        <span class="cart-badge" *ngIf="wishlistCount$ | async as count">{{ count }}</span>
+      </a>
+      <a *ngIf="currentUser$ | async" routerLink="/orders" routerLinkActive="active" (click)="closeMobileMenu()">Orders</a>
+      <ng-container *ngIf="currentUser$ | async as user; else notLoggedInMobile">
+        <div class="mobile-user-info">
+          <span class="user-name">{{ user.name }}</span>
+          <a (click)="logout()" class="logout-btn">Logout</a>
+        </div>
+      </ng-container>
+      <ng-template #notLoggedInMobile>
+        <a routerLink="/login" routerLinkActive="active" (click)="closeMobileMenu()">Login</a>
+      </ng-template>
+    </nav>
+  </div>
+</header>
+

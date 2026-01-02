@@ -1,0 +1,154 @@
+.home {
+  min-height: calc(100vh - 200px);
+}
+
+.hero-section {
+  background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%);
+  color: white;
+  padding: 60px 0;
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.hero-section h1 {
+  font-size: 48px;
+  margin: 0 0 16px 0;
+  font-weight: 500;
+}
+
+.hero-section p {
+  font-size: 20px;
+  margin: 0;
+  opacity: 0.9;
+}
+
+.modules-section {
+  padding: 24px 0;
+}
+
+.modules-section h2 {
+  margin-bottom: 32px;
+  color: #333;
+  font-size: 32px;
+  text-align: center;
+}
+
+.modules-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+.module-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.module-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+}
+
+.module-banner {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  position: relative;
+  background: #f5f5f5;
+}
+
+.module-banner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.module-content {
+  padding: 20px;
+  text-align: center;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.module-icon {
+  font-size: 48px;
+  margin-bottom: 12px;
+  line-height: 1;
+}
+
+.module-card h3 {
+  margin: 0 0 8px 0;
+  font-size: 22px;
+  color: #333;
+  font-weight: 600;
+}
+
+.module-description {
+  color: #666;
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 48px;
+  color: #666;
+}
+
+@media (max-width: 768px) {
+  .hero-section {
+    padding: 40px 0;
+  }
+
+  .hero-section h1 {
+    font-size: 32px;
+  }
+  
+  .hero-section p {
+    font-size: 16px;
+  }
+  
+  .modules-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .module-banner {
+    height: 180px;
+  }
+
+  .module-content {
+    padding: 16px;
+  }
+
+  .module-card h3 {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .modules-section h2 {
+    font-size: 24px;
+    margin-bottom: 24px;
+  }
+
+  .module-banner {
+    height: 160px;
+  }
+
+  .module-icon {
+    font-size: 40px;
+  }
+}
+

@@ -1,0 +1,46 @@
+<div class="image-upload">
+  <div class="upload-section">
+    <input 
+      type="file" 
+      id="image-upload-input"
+      [multiple]="multiple"
+      accept="image/*"
+      (change)="onFileSelected($event)"
+      style="display: none;">
+    
+    <button 
+      type="button" 
+      class="upload-btn"
+      (click)="triggerFileInput()"
+      [disabled]="isUploading || uploadedImages.length >= maxImages">
+      <span *ngIf="!isUploading">📷 {{ multiple ? 'Upload Images' : 'Upload Image' }}</span>
+      <span *ngIf="isUploading">⏳ Uploading...</span>
+    </button>
+    
+    <div class="upload-info" *ngIf="uploadedImages.length > 0">
+      <span>{{ uploadedImages.length }} / {{ maxImages }} images</span>
+    </div>
+  </div>
+
+  <div class="error-message" *ngIf="errorMessage">
+    {{ errorMessage }}
+  </div>
+
+  <div class="images-grid" *ngIf="uploadedImages.length > 0">
+    <div class="image-item" *ngFor="let image of uploadedImages; let i = index">
+      <img [src]="image" [alt]="'Image ' + (i + 1)" (error)="onImageError($event)">
+      <button 
+        type="button" 
+        class="remove-btn" 
+        (click)="removeImage(i)"
+        aria-label="Remove image">
+        ×
+      </button>
+    </div>
+  </div>
+
+  <div class="upload-hint">
+    <small>Supported formats: JPG, PNG, WEBP | Max size: 5MB per image</small>
+  </div>
+</div>
+

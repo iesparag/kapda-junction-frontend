@@ -1,0 +1,80 @@
+<div class="module-management">
+  <div class="header-actions">
+    <h2>Product Module Management</h2>
+    <button class="btn btn-primary" (click)="openAddForm()">+ Add New Module</button>
+  </div>
+
+  <div class="form-section" *ngIf="showForm">
+    <div class="card">
+      <h3>{{ editingModule ? 'Edit' : 'Add New' }} Product Module</h3>
+      <form (ngSubmit)="saveModule()">
+        <div class="form-group">
+          <label class="form-label">Module Name *</label>
+          <input type="text" class="form-control" [(ngModel)]="formData.name" 
+                 (input)="onNameChange()" name="name" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Slug *</label>
+          <input type="text" class="form-control" [(ngModel)]="formData.slug" 
+                 name="slug" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Icon (Emoji or URL)</label>
+          <input type="text" class="form-control" [(ngModel)]="formData.icon" name="icon">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Banner Image</label>
+          <app-image-upload
+            [existingImages]="getBannerImageArray()"
+            [multiple]="false"
+            [maxImages]="1"
+            (imagesChange)="onBannerImageChange($event)">
+          </app-image-upload>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Description</label>
+          <textarea class="form-control" [(ngModel)]="formData.description" 
+                    name="description" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+          <label>
+            <input type="checkbox" [(ngModel)]="formData.isActive" name="isActive">
+            Active
+          </label>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">Save</button>
+          <button type="button" class="btn btn-secondary" (click)="cancelForm()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modules-list">
+    <div class="card" *ngFor="let module of modules$ | async">
+      <div class="module-header">
+        <div class="module-image-preview" *ngIf="module.bannerImage">
+          <img [src]="module.bannerImage" [alt]="module.name + ' banner'" (error)="onImageError($event)">
+        </div>
+        <div class="module-info">
+          <h3>{{ module.icon }} {{ module.name }}</h3>
+          <p class="slug">Slug: {{ module.slug }}</p>
+          <p class="description" *ngIf="module.description">{{ module.description }}</p>
+        </div>
+        <div class="module-actions">
+          <button class="btn btn-secondary" (click)="toggleActive(module)">
+            {{ module.isActive ? 'Disable' : 'Enable' }}
+          </button>
+          <button class="btn btn-primary" (click)="openEditForm(module)">Edit</button>
+          <button class="btn btn-danger" (click)="deleteModule(module)">Delete</button>
+        </div>
+      </div>
+      <div class="module-status">
+        <span [class.active]="module.isActive" [class.inactive]="!module.isActive">
+          {{ module.isActive ? 'Active' : 'Inactive' }}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+

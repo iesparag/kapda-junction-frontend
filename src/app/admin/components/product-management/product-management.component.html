@@ -1,0 +1,146 @@
+<div class="product-management">
+  <div class="header-actions">
+    <h2>Product Management</h2>
+    <button class="btn btn-primary" (click)="openAddForm()">+ Add New Product</button>
+  </div>
+
+  <div class="form-section" *ngIf="showForm">
+    <div class="card">
+      <h3>{{ editingProduct ? 'Edit' : 'Add New' }} Product</h3>
+      <form (ngSubmit)="saveProduct()">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Product Name *</label>
+            <input type="text" class="form-control" [(ngModel)]="formData.name" 
+                   name="name" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Product Module *</label>
+            <select class="form-control" [(ngModel)]="formData.productModuleId" 
+                    name="productModuleId" 
+                    (change)="onModuleChange()"
+                    required>
+              <option value="">Select Module</option>
+              <option *ngFor="let module of modules" [value]="module.id">
+                {{ module.name }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Category *</label>
+            <select class="form-control" [(ngModel)]="formData.categoryId" 
+                    name="categoryId" 
+                    (change)="onCategoryChange()"
+                    [disabled]="!formData.productModuleId"
+                    required>
+              <option value="">Select Category</option>
+              <option *ngFor="let cat of availableCategories" [value]="cat.id">
+                {{ cat.name }}
+              </option>
+            </select>
+            <small *ngIf="!formData.productModuleId" class="form-hint">
+              Please select a Product Module first to see categories
+            </small>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Subcategory (Optional)</label>
+            <select class="form-control" [(ngModel)]="formData.subcategoryId" 
+                    name="subcategoryId"
+                    [disabled]="!formData.categoryId">
+              <option value="">None</option>
+              <option *ngFor="let subcat of availableSubcategories" [value]="subcat.id">
+                {{ subcat.name }}
+              </option>
+            </select>
+            <small *ngIf="!formData.categoryId" class="form-hint">
+              Select a category first to see subcategories
+            </small>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Description</label>
+          <textarea class="form-control" [(ngModel)]="formData.description" 
+                    name="description" rows="4"></textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Price (₹) *</label>
+            <input type="number" class="form-control" [(ngModel)]="formData.price" 
+                   name="price" min="0" step="0.01" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Discount (%)</label>
+            <input type="number" class="form-control" [(ngModel)]="formData.discount" 
+                   name="discount" min="0" max="100" step="1">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Stock *</label>
+            <input type="number" class="form-control" [(ngModel)]="formData.stock" 
+                   name="stock" min="0" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Product Images</label>
+          <app-image-upload
+            [existingImages]="formData.images || []"
+            [multiple]="true"
+            [maxImages]="10"
+            (imagesChange)="onImagesChange($event)">
+          </app-image-upload>
+        </div>
+        <div class="form-group">
+          <label>
+            <input type="radio" [(ngModel)]="formData.status" name="status" value="active">
+            Active
+          </label>
+          <label style="margin-left: 16px;">
+            <input type="radio" [(ngModel)]="formData.status" name="status" value="inactive">
+            Inactive
+          </label>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">Save</button>
+          <button type="button" class="btn btn-secondary" (click)="cancelForm()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="products-list">
+    <div class="card" *ngFor="let product of products$ | async">
+      <div class="product-header">
+        <div class="product-image-preview">
+          <img [src]="product.images[0] || 'https://via.placeholder.com/100x100'" 
+               [alt]="product.name">
+        </div>
+        <div class="product-info">
+          <h3>{{ product.name }}</h3>
+          <p class="description">{{ product.description }}</p>
+          <div class="product-details">
+            <span>Module: {{ getModuleName(product.productModuleId) }}</span>
+            <span>Category: {{ getCategoryName(product.categoryId) }}</span>
+            <span>Price: ₹{{ product.price }}</span>
+            <span *ngIf="product.discount">Discount: {{ product.discount }}%</span>
+            <span>Stock: {{ product.stock }}</span>
+          </div>
+        </div>
+        <div class="product-actions">
+          <button class="btn btn-secondary" (click)="toggleStatus(product)">
+            {{ product.status === 'active' ? 'Deactivate' : 'Activate' }}
+          </button>
+          <button class="btn btn-primary" (click)="openEditForm(product)">Edit</button>
+          <button class="btn btn-danger" (click)="deleteProduct(product)">Delete</button>
+        </div>
+      </div>
+      <div class="product-status">
+        <span [class.active]="product.status === 'active'" 
+              [class.inactive]="product.status === 'inactive'">
+          {{ product.status === 'active' ? 'Active' : 'Inactive' }}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+

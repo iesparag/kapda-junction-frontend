@@ -1,0 +1,58 @@
+<div class="wishlist-page">
+  <div class="container">
+    <div class="wishlist-header">
+      <h1>My Wishlist</h1>
+      <div class="header-actions">
+        <button class="btn btn-secondary" (click)="clearWishlist()" *ngIf="wishlistCount$ | async as count" [disabled]="count === 0">
+          Clear All
+        </button>
+      </div>
+    </div>
+
+    <div class="wishlist-content" *ngIf="wishlist$ | async as wishlist">
+      <div *ngIf="wishlist.length === 0" class="empty-wishlist">
+        <div class="empty-icon">♡</div>
+        <h2>Your wishlist is empty</h2>
+        <p>Start adding products you love to your wishlist!</p>
+        <a routerLink="/" class="btn btn-primary">Browse Products</a>
+      </div>
+
+      <div class="wishlist-grid" *ngIf="wishlist.length > 0">
+        <div class="wishlist-item" *ngFor="let product of wishlist">
+          <div class="product-image" [routerLink]="['/products', product.id]">
+            <img [src]="product.images[0] || 'https://via.placeholder.com/300x300'" [alt]="product.name">
+            <div class="discount-badge" *ngIf="product.discount">
+              {{ product.discount }}% OFF
+            </div>
+            <button class="remove-wishlist-btn" (click)="removeFromWishlist(product)" title="Remove from wishlist">
+              ×
+            </button>
+          </div>
+          <div class="product-info" [routerLink]="['/products', product.id]">
+            <h3 class="product-name">{{ product.name }}</h3>
+            <p class="product-description">{{ product.description }}</p>
+            <div class="product-price">
+              <span class="current-price">₹{{ getCurrentPrice(product) }}</span>
+              <span class="original-price" *ngIf="product.discount">₹{{ product.price }}</span>
+            </div>
+            <div class="stock-info" [class.in-stock]="product.stock > 0" [class.out-of-stock]="product.stock === 0">
+              {{ product.stock > 0 ? 'In Stock' : 'Out of Stock' }}
+            </div>
+          </div>
+          <div class="product-actions">
+            <button class="btn btn-primary" 
+                    (click)="addToCart(product)"
+                    [disabled]="product.stock === 0">
+              Add to Cart
+            </button>
+            <button class="btn btn-secondary" 
+                    (click)="removeFromWishlist(product)">
+              Remove
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

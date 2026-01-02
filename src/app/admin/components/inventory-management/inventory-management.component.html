@@ -1,0 +1,52 @@
+<div class="inventory-management">
+  <h2>Inventory Management</h2>
+  
+  <div class="inventory-summary">
+    <div class="summary-card">
+      <h3>Total Products</h3>
+      <p class="count">{{ totalProducts$ | async }}</p>
+    </div>
+    <div class="summary-card">
+      <h3>In Stock</h3>
+      <p class="count in-stock">
+        {{ inStockCount$ | async }}
+      </p>
+    </div>
+    <div class="summary-card">
+      <h3>Low Stock</h3>
+      <p class="count low-stock">
+        {{ lowStockCount$ | async }}
+      </p>
+    </div>
+    <div class="summary-card">
+      <h3>Out of Stock</h3>
+      <p class="count out-of-stock">
+        {{ outOfStockCount$ | async }}
+      </p>
+    </div>
+  </div>
+
+  <div class="inventory-table">
+    <table>
+      <thead>
+        <tr>
+          <th>Product Name</th>
+          <th>Current Stock</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let product of products$ | async">
+          <td>{{ product.name }}</td>
+          <td>{{ product.stock }}</td>
+          <td>
+            <span [class]="'status-badge ' + getStockStatus(product.stock)">
+              {{ getStockStatusText(product.stock) }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+

@@ -1,0 +1,29 @@
+<!-- Snackbar Message -->
+<div class="snackbar-container" *ngIf="message" [@slideInOut]>
+  <div class="snackbar" [ngClass]="'snackbar-' + message.type">
+    <div class="snackbar-content">
+      <span class="snackbar-icon">
+        <span *ngIf="message.type === 'success'">✓</span>
+        <span *ngIf="message.type === 'error'">✕</span>
+        <span *ngIf="message.type === 'info'">ℹ</span>
+        <span *ngIf="message.type === 'warning'">⚠</span>
+      </span>
+      <span class="snackbar-message">{{ message.message }}</span>
+    </div>
+    <button class="snackbar-close" (click)="dismiss()" aria-label="Close">×</button>
+  </div>
+</div>
+
+<!-- Confirm Dialog -->
+<div class="confirm-overlay" *ngIf="confirm" (click)="handleCancel()">
+  <div class="confirm-dialog" (click)="$event.stopPropagation()" [@fadeInOut]>
+    <div class="confirm-content">
+      <p class="confirm-message">{{ confirm.message }}</p>
+      <div class="confirm-actions">
+        <button class="btn btn-secondary" (click)="handleCancel()">Cancel</button>
+        <button class="btn btn-primary" (click)="handleConfirm()">Confirm</button>
+      </div>
+    </div>
+  </div>
+</div>
+
